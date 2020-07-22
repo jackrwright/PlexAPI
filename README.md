@@ -6,6 +6,8 @@ For secure token storage, it uses the [KeychainWrapper](https://github.com/jrend
 
 ### Example Usage
 
+This follows the authetication procedure for an app as recommended by this Plex [article](https://forums.plex.tv/t/authenticating-with-plex/609370).
+
 Start the sign-in process:
 
 ```swift
