@@ -55,6 +55,8 @@ override func viewDidAppear(_ animated: Bool) {
         self.pollForAuthToken()
     }
 }
+
+private var timer: Timer?
     
 /// Poll periodically for a valid auth token to show up
 private func pollForAuthToken() {
@@ -66,7 +68,7 @@ private func pollForAuthToken() {
 }
 
 ```
-When PlexAPI.checkForAuthToken() gets a valid auth token, it posts a ntotification that your app should listen for. This can be set up in viewDidLoad:
+When PlexAPI.checkForAuthToken() gets a valid auth token, it posts a notification that your app should listen for. This can be set up in viewDidLoad:
 
 ```swift
 override func viewDidLoad() {
@@ -86,8 +88,9 @@ override func viewDidLoad() {
     
     DispatchQueue.main.async {
         
-        self.isSignedIn = true
-        
+        // stop polling
+        self.timer?.invalidate()
+
         self.safariVC?.dismiss(animated: true, completion: nil)
         
         // The token has been saved securely in the user's keychain,
