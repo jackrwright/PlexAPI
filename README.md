@@ -1,6 +1,6 @@
 # PlexAPI
 
-This package provides code to sign in to a Plex.tv account.
+This Swift package provides code to sign into a Plex.tv account.
 
 For secure token storage, it uses the [KeychainWrapper](https://github.com/jrendel/SwiftKeychainWrapper) class, written by Jason Rendel. For simplicity, its source is manually included in this package.
 
