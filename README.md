@@ -11,18 +11,14 @@ This follows the authetication procedure for an app as recommended by this Plex 
 Start the sign-in process:
 
 ```swift
-   var isSigningIn: Bool = false {
-        didSet {
-            if isSigningIn {
-                self.signInButton.setTitle("Cancel", for: .normal)
-                self.signInActivity.startAnimating()
-            } else {
-                self.timer?.invalidate()
-                self.signInActivity.stopAnimating()
-                self.signInButton.setTitle("Sign in", for: .normal)
-            }
+var isSigningIn: Bool = false {
+    didSet {
+        if !isSigningIn {
+	        // stop polling
+	        self.timer?.invalidate()
         }
     }
+}
 
 @IBAction func signInTapped(_ sender: UIButton) {
 	...
@@ -103,11 +99,8 @@ override func viewDidLoad() {
     DispatchQueue.main.async {
         
         // stop polling
-	
-        self.timer?.invalidate()
+        self.isSigningIn = false
 
-        self.safariVC?.dismiss(animated: true, completion: nil)
-        
         // The token has been saved securely in the user's keychain,
         // and can be retrieved with this call:
         print(PlexAPI.savedToken ?? "no token saved")
