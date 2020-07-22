@@ -1,6 +1,6 @@
 # PlexAPI
 
-This Swift package provides code to sign into a Plex.tv account.
+This Swift package provides code to authentic with a user's Plex.tv account to retrieve the user's access token. This token can be used with Plex Personal Media Server API calls.
 
 For secure token storage, it uses the [KeychainWrapper](https://github.com/jrendel/SwiftKeychainWrapper) class, written by Jason Rendel. For simplicity, its source is manually included in this package.
 
@@ -11,10 +11,24 @@ This follows the authetication procedure for an app as recommended by this Plex 
 Start the sign-in process:
 
 ```swift
-var isSigningIn = false
+   var isSigningIn: Bool = false {
+        didSet {
+            if isSigningIn {
+                self.signInButton.setTitle("Cancel", for: .normal)
+                self.signInActivity.startAnimating()
+            } else {
+                self.timer?.invalidate()
+                self.signInActivity.stopAnimating()
+                self.signInButton.setTitle("Sign in", for: .normal)
+            }
+        }
+    }
 
 @IBAction func signInTapped(_ sender: UIButton) {
 	...
+	
+	isSigningIn = true
+	
 	// The following call requests a time-sensistive pin that's used to construct a Plex auth app URL.
 	// The pin is saved for use later to verify sign-in.
 	PlexAPI.requestToken { (url, error) in
@@ -89,6 +103,7 @@ override func viewDidLoad() {
     DispatchQueue.main.async {
         
         // stop polling
+	
         self.timer?.invalidate()
 
         self.safariVC?.dismiss(animated: true, completion: nil)
